@@ -1,0 +1,40 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset (update path if needed)
+df = pd.read_csv("train.csv") # Ames Housing dataset
+
+# Categorical features shown in your output
+features = [
+    "GarageCond",
+    "GarageQual",
+    "KitchenQual",
+    "HeatingQC",
+    "BsmtQual",
+    "ExterCond",
+    "ExterQual"
+]
+
+# Create subplots (2 rows x 4 columns like your slide)
+fig, axes = plt.subplots(2, 4, figsize=(16, 8))
+axes = axes.flatten()
+
+for i, feature in enumerate(features):
+    # Calculate mean SalePrice per category
+    mean_price = df.groupby(feature)["SalePrice"].mean()
+
+    # Bar plot
+    axes[i].bar(mean_price.index.astype(str), mean_price.values)
+    axes[i].set_title(feature)
+    axes[i].set_ylabel("SalePrice")
+    axes[i].set_xlabel(feature)
+    axes[i].tick_params(axis='x', rotation=45)
+
+# Hide empty subplot (last one)
+axes[-1].axis("off")
+
+# Overall title
+fig.suptitle("Code Output I", fontsize=16)
+
+plt.tight_layout()
+plt.show()
